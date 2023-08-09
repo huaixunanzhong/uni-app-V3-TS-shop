@@ -21,3 +21,14 @@ export type HotPanelItem = {
     title: string,
     type: string
 }
+
+// 猜你喜欢
+export type GuessItem = {
+    id: string,
+    name: string,
+    desc: string,
+    price: number,
+    picture: string,
+    discount: number,
+    orderNum: number
+}

@@ -6,6 +6,7 @@ import CustomNavbar from "@/pages/index/components/CustomNavbar.vue"
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
 import type { BannerItem, CategoryItem, HotPanelItem } from "@/types/home"
+import type { XshopGuessInstance } from "@/types/components"
 
 
 
@@ -27,7 +28,11 @@ const getHotPanelData = async () => {
   const res = await getHotPanelAPI()
   hotpanel.value = res.result
 }
-
+// 滚动触底事件
+const guessRef = ref<XshopGuessInstance>()
+const onScrolltolower = () => {
+  guessRef.value?.getMore()
+}
 
 onLoad(() => {
   getHomeBannerData()
@@ -39,15 +44,28 @@ onLoad(() => {
 
 <template>
   <CustomNavbar />
-  <XshopSwiper :list="bannerList" />
-  <CategoryPanel :list="categorylist" />
-  <HotPanel :list="hotpanel" />
-  <view class="index">index</view>
+  <scroll-view scroll-y @scrolltolower="onScrolltolower">
+    <!-- 自定义轮播图 -->
+    <XshopSwiper :list="bannerList" />
+    <!-- 分类面板 -->
+    <CategoryPanel :list="categorylist" />
+    <!-- 热门推荐 -->
+    <HotPanel :list="hotpanel" />
+    <!-- 猜你喜欢 -->
+    <XshopGuess ref="guessRef" />
+  </scroll-view>
 </template>
 
 <style lang="scss">
 //
 page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: #f7f7f7;
+}
+
+.scroll-view {
+  flex: 1;
 }
 </style>

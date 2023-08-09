@@ -34,6 +34,16 @@ const onScrolltolower = () => {
   guessRef.value?.getMore()
 }
 
+// 下拉刷新事件
+// 控制下拉刷新事件
+const isTriggered = ref(false)
+const onRefresherrefresh = async () => {
+  isTriggered.value = true
+  // 利用Promise.all优化请求  三个请求一起发送
+  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHotPanelData()])
+  isTriggered.value = false
+}
+
 onLoad(() => {
   getHomeBannerData()
   getHomeCategoryData()
@@ -44,7 +54,8 @@ onLoad(() => {
 
 <template>
   <CustomNavbar />
-  <scroll-view scroll-y @scrolltolower="onScrolltolower">
+  <scroll-view scroll-y @scrolltolower="onScrolltolower" refresher-enabled @refresherrefresh="onRefresherrefresh"
+    :refresher-triggered="isTriggered">
     <!-- 自定义轮播图 -->
     <XshopSwiper :list="bannerList" />
     <!-- 分类面板 -->

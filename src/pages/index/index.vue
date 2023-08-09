@@ -7,6 +7,7 @@ import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
 import type { BannerItem, CategoryItem, HotPanelItem } from "@/types/home"
 import type { XshopGuessInstance } from "@/types/components"
+import PageSkeleton from './components/PageSkeleton.vue'
 
 
 
@@ -45,10 +46,14 @@ const onRefresherrefresh = async () => {
   isTriggered.value = false
 }
 
-onLoad(() => {
-  getHomeBannerData()
-  getHomeCategoryData()
-  getHotPanelData()
+// 控制骨架屏
+const isLoading = ref(false)
+onLoad(async () => {
+  isLoading.value = true
+  await Promise.all([getHomeBannerData(),
+  getHomeCategoryData(),
+  getHotPanelData()])
+  isLoading.value = false
 })
 
 </script>
@@ -57,14 +62,17 @@ onLoad(() => {
   <CustomNavbar />
   <scroll-view scroll-y @scrolltolower="onScrolltolower" refresher-enabled @refresherrefresh="onRefresherrefresh"
     :refresher-triggered="isTriggered">
-    <!-- 自定义轮播图 -->
-    <XshopSwiper :list="bannerList" />
-    <!-- 分类面板 -->
-    <CategoryPanel :list="categorylist" />
-    <!-- 热门推荐 -->
-    <HotPanel :list="hotpanel" />
-    <!-- 猜你喜欢 -->
-    <XshopGuess ref="guessRef" />
+    <PageSkeleton v-if="isLoading" />
+    <template v-else>
+      <!-- 自定义轮播图 -->
+      <XshopSwiper :list="bannerList" />
+      <!-- 分类面板 -->
+      <CategoryPanel :list="categorylist" />
+      <!-- 热门推荐 -->
+      <HotPanel :list="hotpanel" />
+      <!-- 猜你喜欢 -->
+      <XshopGuess ref="guessRef" />
+    </template>
   </scroll-view>
 </template>
 

@@ -4,20 +4,21 @@ import { onLoad } from '@dcloudio/uni-app'
 import { getHomeBannerAPI, getHomeCategoryAPI } from "@/services/home"
 import CustomNavbar from "@/pages/index/components/CustomNavbar.vue"
 import CategoryPanel from './components/CategoryPanel.vue'
-import type { BannerItem } from "@/types/home"
-// 存储数据
-const bannerList = ref<BannerItem[]>([]) //轮播图数据
-const categorylist = ref<any>([])
+import type { BannerItem, CategoryItem } from "@/types/home"
+
+
 
 // 获取轮播图数据
+const bannerList = ref<BannerItem[]>([]) //轮播图数据
 const getHomeBannerData = async () => {
   const res = await getHomeBannerAPI()
   bannerList.value = res.result
 }
 // 获取前台分类数据
+const categorylist = ref<CategoryItem[]>([])
 const getHomeCategoryData = async () => {
   const res = await getHomeCategoryAPI()
-  console.log(res)
+  categorylist.value = res.result
 }
 
 
@@ -31,7 +32,7 @@ onLoad(() => {
 <template>
   <CustomNavbar />
   <XshopSwiper :list="bannerList" />
-  <CategoryPanel />
+  <CategoryPanel :list="categorylist" />
   <view class="index">index</view>
 </template>
 

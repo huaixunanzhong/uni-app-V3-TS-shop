@@ -12,7 +12,6 @@ const onChange: UniHelper.SwiperOnChange = (event) => {
 const props = defineProps<{
   list: BannerItem[]
 }>()
-console.log(props)
 </script>
 
 <template>

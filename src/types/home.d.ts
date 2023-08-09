@@ -12,3 +12,12 @@ export type CategoryItem = {
     name: string,
     icon: string
 }
+// 热门推荐
+export type HotPanelItem = {
+    id: string,
+    alt: string,
+    pictures: string[],
+    target: string,
+    title: string,
+    type: string
+}

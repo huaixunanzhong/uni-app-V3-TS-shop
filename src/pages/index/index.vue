@@ -39,8 +39,9 @@ const onScrolltolower = () => {
 const isTriggered = ref(false)
 const onRefresherrefresh = async () => {
   isTriggered.value = true
+  guessRef.value?.resetData()
   // 利用Promise.all优化请求  三个请求一起发送
-  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHotPanelData()])
+  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHotPanelData(), guessRef.value?.getMore()])
   isTriggered.value = false
 }
 

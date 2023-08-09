@@ -8,7 +8,7 @@ import type { PageParams } from "@/types/global"
 // 获取猜你喜欢列表数据
 const guesslikeList = ref<GuessItem[]>([])
 const pageParams: Required<PageParams> = {
-    page: 30,
+    page: 1,
     pageSize: 10
 }
 // 结束标记
@@ -28,11 +28,18 @@ const getGuessLikeData = async () => {
         finish.value = true
     }
 }
+// 重置数据
+const resetData = () => {
+    pageParams.page = 1
+    guesslikeList.value = []
+    finish.value = false
+}
 onMounted(() => {
     getGuessLikeData()
 })
 // 暴露实例对象上的方法
 defineExpose({
+    resetData,
     getMore: getGuessLikeData
 })
 

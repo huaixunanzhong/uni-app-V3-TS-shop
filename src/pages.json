@@ -85,17 +85,4 @@
 			}
 		]
 	}
-	// "subPackages": [
-	// 	{
-	// 		"root": "pages",
-	// 		"pages": [
-	// 			{
-	// 				"path": "hot",
-	// 				"style": {
-	// 					"navigationBarTitleText": "热门推荐"
-	// 				}
-	// 			}
-	// 		]
-	// 	}
-	// ]
 }

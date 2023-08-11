@@ -5,6 +5,7 @@ import type { HotPanelItem } from '@/types/home';
 defineProps<{
     list: HotPanelItem[]
 }>()
+
 </script>
 
 <template>

@@ -10,7 +10,7 @@ export type PageResult<T> = {
 export type PageParams = {
     /*页码*/
     page?: number,
-    pageSize?: number
+    pageSize?: number,
 }
 /** 通用商品类型 */
 export type GoodsItem = {

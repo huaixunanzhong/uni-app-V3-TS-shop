@@ -21,12 +21,15 @@ uni.setNavigationBarTitle({ title: urlMap!.title })
 // 推荐封面图
 const bannerPicture=ref('')
 // 推荐选项
-const subTypes=ref<SubTypeItem[]>([])
+const subTypes=ref<(SubTypeItem & {finsh?:boolean})[]>([])
 // 高亮下标
 const activeIndex=ref(0)
 // 页面加载获取数据
 const getHotRecommendData = async () => {
-  const res = await getHotRecommendAPI(urlMap!.url)
+  const res = await getHotRecommendAPI(urlMap!.url,{
+    page:import.meta.env.DEV?34:1,
+    pageSize:10
+  })
   bannerPicture.value=res.result.bannerPicture
   subTypes.value=res.result.subTypes
 }
@@ -38,8 +41,14 @@ onLoad(() => {
 const onScrolltoLower=async ()=>{
   // 获取当前的tab选项
   const currSubType=subTypes.value[activeIndex.value]
-  // 当前页码累加
+  if(currSubType.goodsItems.page<currSubType.goodsItems.pages){
+    // 当前页码累加
   currSubType.goodsItems.page++
+  }else{
+    currSubType.finsh=true
+    uni.showToast({icon:'none',title:'没有更多数据了~'})
+    return
+  }
   const res = await getHotRecommendAPI(urlMap!.url,{
     subType:currSubType.id,
     page:currSubType.goodsItems.page,

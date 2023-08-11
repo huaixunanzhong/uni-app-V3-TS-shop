@@ -1,4 +1,7 @@
 // 首页-广告区域数据类型
+
+import type { GoodsItem } from "./global"
+
 // 轮播图
 export type BannerItem = {
     id: string,
@@ -23,12 +26,4 @@ export type HotPanelItem = {
 }
 
 // 猜你喜欢
-export type GuessItem = {
-    id: string,
-    name: string,
-    desc: string,
-    price: number,
-    picture: string,
-    discount: number,
-    orderNum: number
-}
+export type GuessItem = GoodsItem

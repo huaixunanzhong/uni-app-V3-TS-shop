@@ -21,7 +21,7 @@ uni.setNavigationBarTitle({ title: urlMap!.title })
 // 推荐封面图
 const bannerPicture=ref('')
 // 推荐选项
-const subTypes=ref<(SubTypeItem & {finsh?:boolean})[]>([])
+const subTypes=ref<(SubTypeItem & {finish?:boolean})[]>([])
 // 高亮下标
 const activeIndex=ref(0)
 // 页面加载获取数据
@@ -45,7 +45,7 @@ const onScrolltoLower=async ()=>{
     // 当前页码累加
   currSubType.goodsItems.page++
   }else{
-    currSubType.finsh=true
+    currSubType.finish=true
     uni.showToast({icon:'none',title:'没有更多数据了~'})
     return
   }
@@ -87,7 +87,7 @@ const onScrolltoLower=async ()=>{
           </view>
         </navigator>
       </view>
-      <view class="loading-text">正在加载...</view>
+      <view class="loading-text">{{item.finish?"————————":"正在加载..."}}</view>
     </scroll-view>
   </view>
 </template>

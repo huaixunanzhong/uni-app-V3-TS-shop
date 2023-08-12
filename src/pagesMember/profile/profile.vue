@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import {getMemberProfileAPI,putMemberProfileAPI} from "@/services/profile"
 import { useMemberStore } from "@/stores/modules/member"
-<<<<<<< HEAD
 import type { Gender } from "@/types/member"
-=======
->>>>>>> a5ddf527cd75b0382052bff553a0719eae55aa8b
 import type { ProfileDetail } from "@/types/member"
 import { onLoad } from "@dcloudio/uni-app"
 import { ref } from "vue"
@@ -53,11 +50,17 @@ const onAvatarChange=()=>{
 const onGenderChange:UniHelper.RadioGroupOnChange=(res)=>{
   profile.value.gender=res.detail.value as Gender
 }
+// 修改生日
+const onDateChange:UniHelper.DatePickerOnChange=(res)=>{
+  profile.value.birthday=res.detail.value
+}
 // 提交表单
 const onSubmit=async()=>{
+  const {nickname,gender,birthday}=profile.value
   const res=await putMemberProfileAPI({
-    nickname:profile.value.nickname,
-    gender:profile.value.gender
+    nickname,
+    gender,
+    birthday
   })
   // 更新store中用户昵称信息
   memberStore.profile!.nickname=res.result.nickname
@@ -117,9 +120,10 @@ onLoad(()=>{
           <picker
             class="picker"
             mode="date"
-            :start="profile?.birthday"
+            start="1990-01-01"
             :end="new Date()"
-            value="2000-01-01"
+            :value="profile?.birthday"
+            @change="onDateChange"
           >
             <view v-if="profile?.birthday">{{profile?.birthday}}</view>
             <view class="placeholder" v-else>请选择日期</view>

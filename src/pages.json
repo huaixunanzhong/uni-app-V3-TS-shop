@@ -50,6 +50,12 @@
 			"style": {
 				"navigationBarTitleText": "商品详情"
 			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "用户登录"
+			}
 		}
 	],
 	"globalStyle": {

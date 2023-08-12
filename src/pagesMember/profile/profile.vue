@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import {getMemberProfileAPI,putMemberProfileAPI} from "@/services/profile"
 import { useMemberStore } from "@/stores/modules/member"
+<<<<<<< HEAD
 import type { Gender } from "@/types/member"
+=======
+>>>>>>> a5ddf527cd75b0382052bff553a0719eae55aa8b
 import type { ProfileDetail } from "@/types/member"
 import { onLoad } from "@dcloudio/uni-app"
 import { ref } from "vue"

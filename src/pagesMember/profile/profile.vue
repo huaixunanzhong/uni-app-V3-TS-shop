@@ -54,13 +54,25 @@ const onGenderChange:UniHelper.RadioGroupOnChange=(res)=>{
 const onDateChange:UniHelper.DatePickerOnChange=(res)=>{
   profile.value.birthday=res.detail.value
 }
+// 修改城市
+const fullLocation=ref<[string, string, string]>(['','',''])
+const onFullLocationChange:UniHelper.RegionPickerOnChange=(res)=>{
+  // 前端界面更新
+    profile.value.fullLocation=res.detail.value.join(' ')
+    // 后端数据更新
+    fullLocation.value=res.detail.code!
+
+}
 // 提交表单
 const onSubmit=async()=>{
   const {nickname,gender,birthday}=profile.value
   const res=await putMemberProfileAPI({
     nickname,
     gender,
-    birthday
+    birthday,
+    provinceCode:fullLocation.value[0],
+    cityCode:fullLocation.value[1],
+    countyCode:fullLocation.value[2]
   })
   // 更新store中用户昵称信息
   memberStore.profile!.nickname=res.result.nickname
@@ -131,7 +143,7 @@ onLoad(()=>{
         </view>
         <view class="form-item">
           <text class="label">城市</text>
-          <picker class="picker" mode="region" :value="profile?.fullLocation?.split(' ')">
+          <picker @change="onFullLocationChange" class="picker" mode="region" :value="profile?.fullLocation?.split(' ')">
             <view v-if="profile?.fullLocation">{{profile?.fullLocation}}</view>
             <view class="placeholder" v-else>请选择城市</view>
           </picker>

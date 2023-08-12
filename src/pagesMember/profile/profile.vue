@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import {getMemberProfileAPI,putMemberProfileAPI} from "@/services/profile"
+import { useMemberStore } from "@/stores/modules/member"
 import type { ProfileDetail } from "@/types/member"
 import { onLoad } from "@dcloudio/uni-app"
 import { ref } from "vue"
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
+// 获取用户store
+const memberStore=useMemberStore()
 
 // 获取个人信息
 const profile=ref({} as ProfileDetail)
@@ -27,7 +30,11 @@ const onAvatarChange=()=>{
         filePath:tempFilePath,
         success:(res)=>{
           if(res.statusCode===200){
-            profile.value!.avatar=JSON.parse(res.data).result.avatar
+            const avatar=JSON.parse(res.data).result.avatar
+            // 更新个人信息页用户头像
+            profile.value!.avatar=avatar
+            // 更新store中用户头像信息
+            memberStore.profile!.avatar=avatar
             uni.showToast({icon:'success',title:'用户头像修改成功'})
           }else{
             uni.showToast({icon:'error',title:'用户头像修改失败'})
@@ -42,7 +49,12 @@ const onSubmit=async()=>{
   const res=await putMemberProfileAPI({
     nickname:profile.value.nickname
   })
+  // 更新store中用户昵称信息
+  memberStore.profile!.nickname=res.result.nickname
   uni.showToast({icon:'success',title:'保存成功'})
+  setTimeout(()=>{
+    uni.navigateBack()
+  },500)
 }
 
 onLoad(()=>{

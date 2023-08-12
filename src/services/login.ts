@@ -1,5 +1,6 @@
 // 小程序登录
 
+import type { LoginResult } from "@/types/member"
 import { http } from "@/utils/http"
 
 export type LoginParams={
@@ -10,7 +11,7 @@ export type LoginParams={
 
 // POST/login/wxMin
 export const postWxLoginAPI=(data:LoginParams)=>{
-    return http({
+    return http<LoginResult>({
         method:'POST',
         url:'/login/wxMin',
         data,
@@ -19,7 +20,7 @@ export const postWxLoginAPI=(data:LoginParams)=>{
 // 小程序登录-内测版
 // POST/login/wxMin/simple
 export const postLoginWxMinSimpleAPI=(phoneNumber:string)=>{
-    return http({
+    return http<LoginResult>({
         method:'POST',
         url:'/login/wxMin/simple',
         data:{

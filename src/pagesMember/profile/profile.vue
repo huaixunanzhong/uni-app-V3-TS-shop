@@ -59,20 +59,21 @@ const fullLocation=ref<[string, string, string]>(['','',''])
 const onFullLocationChange:UniHelper.RegionPickerOnChange=(res)=>{
   // 前端界面更新
     profile.value.fullLocation=res.detail.value.join(' ')
-    // 后端数据更新
+  //   // 后端数据更新
     fullLocation.value=res.detail.code!
 
 }
 // 提交表单
 const onSubmit=async()=>{
-  const {nickname,gender,birthday}=profile.value
+  const {nickname,gender,birthday,profession}=profile.value
   const res=await putMemberProfileAPI({
     nickname,
     gender,
     birthday,
     provinceCode:fullLocation.value[0],
     cityCode:fullLocation.value[1],
-    countyCode:fullLocation.value[2]
+    countyCode:fullLocation.value[2],
+    profession
   })
   // 更新store中用户昵称信息
   memberStore.profile!.nickname=res.result.nickname
@@ -150,7 +151,7 @@ onLoad(()=>{
         </view>
         <view class="form-item">
           <text class="label">职业</text>
-          <input class="input" type="text" placeholder="请填写职业" :value="profile?.profession" />
+          <input class="input" type="text" placeholder="请填写职业" v-model="profile.profession" />
         </view>
       </view>
       <!-- 提交按钮 -->

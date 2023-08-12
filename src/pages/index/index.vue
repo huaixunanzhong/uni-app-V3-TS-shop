@@ -6,8 +6,8 @@ import CustomNavbar from "@/pages/index/components/CustomNavbar.vue"
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
 import type { BannerItem, CategoryItem, HotPanelItem } from "@/types/home"
-import type { XshopGuessInstance } from "@/types/components"
 import PageSkeleton from './components/PageSkeleton.vue'
+import { useGussList } from '@/composables'
 
 
 
@@ -30,10 +30,7 @@ const getHotPanelData = async () => {
   hotpanel.value = res.result
 }
 // 滚动触底事件
-const guessRef = ref<XshopGuessInstance>()
-const onScrolltolower = () => {
-  guessRef.value?.getMore()
-}
+const {guessRef,onScrollToLower}=useGussList()
 
 // 下拉刷新事件
 // 控制下拉刷新事件
@@ -60,7 +57,7 @@ onLoad(async () => {
 
 <template>
   <CustomNavbar />
-  <scroll-view scroll-y @scrolltolower="onScrolltolower" refresher-enabled @refresherrefresh="onRefresherrefresh"
+  <scroll-view scroll-y @scrolltolower="onScrollToLower" refresher-enabled @refresherrefresh="onRefresherrefresh"
     :refresher-triggered="isTriggered">
     <PageSkeleton v-if="isLoading" />
     <template v-else>

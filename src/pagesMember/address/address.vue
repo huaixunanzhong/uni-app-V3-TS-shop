@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getMemberAddressAPI } from '@/services/address'
+import { getMemberAddressAPI,deleteMemberAddressByIdAPI } from '@/services/address'
 import type { AddressItem } from '@/types/address'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
@@ -10,6 +10,21 @@ const addressList = ref<AddressItem[]>([])
 const getMemberAddressData = async () => {
   const res = await getMemberAddressAPI()
   addressList.value = res.result
+}
+// 删除地址
+const onDeleteAddress=(id:string)=>{
+  uni.showModal({
+    content: '确定删除地址吗？',
+    showCancel: true,
+    success: async (res) => {
+      if(res.confirm){
+        // 更具id删除收货地址
+        await deleteMemberAddressByIdAPI(id)
+        // 重新获取收获地址
+        getMemberAddressData()
+      }
+    }
+  })
 }
 
 // 初始化调用(页面显示)
@@ -22,27 +37,27 @@ onShow(() => {
   <view class="viewport">
     <!-- 地址列表 -->
     <scroll-view class="scroll-view" scroll-y>
-      <view v-if="true" class="address">
-        <view class="address-list">
+      <view v-if="addressList.length" class="address">
+        <uni-swipe-action class="address-list">
           <!-- 收货地址项 -->
-          <view class="item" v-for="item in addressList" :key="item.id">
+          <uni-swipe-action-item class="item" v-for="item in addressList" :key="item.id">
             <view class="item-content">
               <view class="user">
-                {{item.receiver}}
-                <text class="contact">{{item.contact}}</text>
+                {{ item.receiver }}
+                <text class="contact">{{ item.contact }}</text>
                 <text v-if="item.isDefault" class="badge">默认</text>
               </view>
-              <view class="locate">{{item.fullLocation}} {{item.address}}</view>
-              <navigator
-                class="edit"
-                hover-class="none"
-                :url="`/pagesMember/address-form/address-form?id=${item.id}`"
-              >
+              <view class="locate">{{ item.fullLocation }} {{ item.address }}</view>
+              <navigator class="edit" hover-class="none" :url="`/pagesMember/address-form/address-form?id=${item.id}`">
                 修改
               </navigator>
             </view>
-          </view>
-        </view>
+            <!-- 右插槽 -->
+            <template #right>
+              <button @tap="onDeleteAddress(item.id)" class="delete-button">删除</button>
+            </template>
+          </uni-swipe-action-item>
+        </uni-swipe-action>
       </view>
       <view v-else class="blank">暂无收货地址</view>
     </scroll-view>

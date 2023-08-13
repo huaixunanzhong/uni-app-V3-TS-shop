@@ -33,7 +33,7 @@ const LoginSuccess=(profile:LoginResult)=>{
   uni.showToast({icon:'success',title:'登录成功'})
   // 延迟半秒  switchTab特性 保证提示信息
   setTimeout(()=>{
-    uni.switchTab({ url: '/pages/my/my' })
+    uni.navigateBack()
   },500)
 }
 
